@@ -42,9 +42,56 @@ services:
     networks:
       - laravel
 
+
+  redis:
+    image: redis:alpine
+    container_name: laravel-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - laravel
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel-phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mysql
+    networks:
+      - laravel
+
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    ports:
+      - "8025:8025"
+    networks:
+      - laravel
+
+  horizon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-horizon
+    command: php artisan horizon
+    depends_on:
+      - app
+      - redis
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - laravel
 networks:
   laravel:
 
 volumes:
   mysql-data:
+
 
