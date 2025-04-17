@@ -1,5 +1,5 @@
 # 1️⃣ Base image
-FROM php:8.2-fpm-bullseye
+FROM php:8.2-fpm-bullseye 
 
 # 2️⃣ Set working directory
 WORKDIR /var/www
@@ -24,7 +24,8 @@ RUN sed -i 's|http://deb.debian.org|http://ftp.de.debian.org|g' /etc/apt/sources
     libxpm-dev \
     libvips-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
+
 
 # 4️⃣ Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
