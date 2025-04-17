@@ -33,7 +33,10 @@ jobs:
             sleep 2
           done
 
-      - name: Run Artisan Migrate
+      - name: Install composer dependencies
+        run: docker exec laravel-app composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run migrations
         run: docker exec laravel-app php artisan migrate --force
 
       - name: Run Laravel Tests
